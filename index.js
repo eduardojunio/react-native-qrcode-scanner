@@ -34,10 +34,8 @@ export default class QRCodeScanner extends Component {
     containerStyle: PropTypes.any,
     cameraStyle: PropTypes.any,
     markerStyle: PropTypes.any,
-    topViewStyle: PropTypes.any,
-    bottomViewStyle: PropTypes.any,
-    topContent: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-    bottomContent: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+    overlayViewStyle: PropTypes.any,
+    overlayContent: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
     notAuthorizedView: PropTypes.element,
     permissionDialogTitle: PropTypes.string,
     permissionDialogMessage: PropTypes.string,
@@ -175,20 +173,6 @@ export default class QRCodeScanner extends Component {
     }
   }
 
-  _renderTopContent() {
-    if (this.props.topContent) {
-      return this.props.topContent;
-    }
-    return null;
-  }
-
-  _renderBottomContent() {
-    if (this.props.bottomContent) {
-      return this.props.bottomContent;
-    }
-    return null;
-  }
-
   _renderCameraMarker() {
     if (this.props.showMarker) {
       if (this.props.customMarker) {
@@ -196,7 +180,12 @@ export default class QRCodeScanner extends Component {
       } else {
         return (
           <View style={styles.rectangleContainer}>
-            <View style={[styles.rectangle, this.props.markerStyle ? this.props.markerStyle : null]} />
+            <View
+              style={[
+                styles.rectangle,
+                this.props.markerStyle ? this.props.markerStyle : null,
+              ]}
+            />
           </View>
         );
       }
@@ -253,15 +242,16 @@ export default class QRCodeScanner extends Component {
   }
 
   render() {
+    const { overlayContent } = this.props;
+
     return (
       <View style={[styles.mainContainer, this.props.containerStyle]}>
-        <View style={[styles.infoView, this.props.topViewStyle]}>
-          {this._renderTopContent()}
-        </View>
         {this._renderCamera()}
-        <View style={[styles.infoView, this.props.bottomViewStyle]}>
-          {this._renderBottomContent()}
-        </View>
+        {!!overlayContent && (
+          <View style={[styles.overlayView, this.props.overlayViewStyle]}>
+            {overlayContent}
+          </View>
+        )}
       </View>
     );
   }
@@ -271,20 +261,14 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  infoView: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: Dimensions.get('window').width,
+
+  overlayView: {
+    ...StyleSheet.absoluteFillObject,
   },
 
   camera: {
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    height: Dimensions.get('window').width,
     width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 
   rectangleContainer: {

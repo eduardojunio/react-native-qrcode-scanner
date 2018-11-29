@@ -40,10 +40,8 @@ export interface RNQRCodeScannerProps {
   containerStyle?: RegisteredStyle<ViewStyle>,
   cameraStyle?: RegisteredStyle<ViewStyle>,
   markerStyle?: RegisteredStyle<ViewStyle>,
-  topViewStyle?: RegisteredStyle<ViewStyle>,
-  bottomViewStyle?: RegisteredStyle<ViewStyle>,
-  topContent?: JSX.Element | string,
-  bottomContent?: JSX.Element | string,
+  overlayViewStyle?: RegisteredStyle<ViewStyle>,
+  overlayContent?: JSX.Element | string,
   notAuthorizedView?: JSX.Element,
   permissionDialogTitle?: string,
   permissionDialogMessage?: string,
@@ -64,8 +62,6 @@ export default class QRCodeScanner extends Component<RNQRCodeScannerProps, RNQRC
   enable(): void;
   _setScanning(value: boolean): void;
   _handleBarCodeRead(e: Event): void;
-  _renderTopContent(): JSX.Element | null;
-  _renderBottomContent(): JSX.Element | null;
   _renderCameraMarker(): JSX.Element | null;
   _renderCamera(): JSX.Element;
   reactivate(): void;
